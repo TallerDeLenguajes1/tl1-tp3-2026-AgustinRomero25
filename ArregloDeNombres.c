@@ -39,6 +39,7 @@ int main ()
         strcpy(nombres[i], buffer);
     }
 
+    printf("\n--- Lista de Personas ---\n");
     mostrarPersonas(nombres);
     printf("\n");
 
