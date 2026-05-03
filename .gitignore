@@ -1,5 +1,6 @@
 # Carpeta de configuración de Visual Studio
 .vs/
+.vscode/*
 
 # Archivos temporales de la extensión Code Runner
 TempCodeRunnerFile.c
