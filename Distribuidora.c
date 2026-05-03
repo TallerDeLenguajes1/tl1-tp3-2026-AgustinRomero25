@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
-#define MAXCLIENTES 5
-#define MAXPROD 10
 
 char *TiposProductos [] = {"Galletas","Snack","Cigarrillos","Caramelos","Bebidas"};
 
@@ -17,9 +16,14 @@ struct {
 int ClienteID; // Numerado en el ciclo iterativo
 char *NombreCliente; // Ingresado por usuario
 int CantidadProductosAPedir; // (aleatorio entre 1 y 5)
-Producto *Productos //El tamaño de este arreglo depende de la variable
+Producto *Productos; //El tamaño de este arreglo depende de la variable
  // “CantidadProductosAPedir”
 } typedef Cliente;
+
+float PrecioTotal (Producto producto)
+{
+    return producto.Cantidad * producto.PrecioUnitario;
+}
 
 void cargarDatos (Cliente *lista, int cantClientes) 
 {
@@ -27,6 +31,7 @@ void cargarDatos (Cliente *lista, int cantClientes)
     for (int i = 0; i < cantClientes; i++)
     {
         printf("Ingrese el Nombre del cliente numero %d: ", i + 1);
+        fflush(stdin);
         gets(buffer);
 
         lista[i].ClienteID = i;
@@ -47,7 +52,29 @@ void cargarDatos (Cliente *lista, int cantClientes)
 
 void mostrarDatos (Cliente *lista, int cantClientes)
 {
-    
+    printf("\n------------------------ Datos Clientes -----------------------\n");
+    for (int i = 0; i < cantClientes; i++)
+    {
+        float precioTotal = 0;
+        printf("ID de Cliente: %d\n",lista[i].ClienteID);
+        printf("Nombre: %s\n",lista[i].NombreCliente);
+        printf("Cantidad de Productos a Pedir: %d\n",lista[i].CantidadProductosAPedir);
+
+        for (int j = 0; j < lista[i].CantidadProductosAPedir; j++)
+        {
+            printf("\n------------------------ Producto %d ------------------------\n", j + 1);
+            printf("ID del producto: %d\n",lista[i].Productos[j].ProductoID);
+            printf("Cantidad de productos: %d\n",lista[i].Productos[j].Cantidad);
+            printf("Tipo: %s\n",lista[i].Productos[j].TipoProducto);
+            printf("Precio Unitario: %.2f\n",lista[i].Productos[j].PrecioUnitario);
+            precioTotal += PrecioTotal(lista[i].Productos[j]);
+        }
+
+        printf("\n--------------------------------------------------------------\n");
+        printf("\nTotal a pagar: $%.2f ARS\n", precioTotal);
+        printf("\n--------------------------------------------------------------\n");
+        printf("\n--------------------------------------------------------------\n");
+    }
 }
 
 int main ()
@@ -65,8 +92,9 @@ int main ()
     } else
     {
         Cliente *clientes = (Cliente*) malloc (cantClientes * sizeof(Cliente));
-        printf("La cantidad de clientes registrados es %d.\n");
+        printf("La cantidad de clientes registrados es %d.\n",cantClientes);
         cargarDatos(clientes, cantClientes);
+        mostrarDatos(clientes, cantClientes);
 
         for (int i = 0; i < cantClientes; i++)
         {
